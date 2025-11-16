@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Page</title>
+<link rel="webbsite icon" href="button-design-cta-call-action-with-colorful-gradient-modern-style_728830-1153.avif">
+<style>
+/* Umumiy style */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #1e3c72, #2a5298); /* chiroyli gradient */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar eng tepa */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.85);
+  padding: 12px 20px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 100;
+}
+
+/* Buttons container */
+.navbar .left-buttons,
+.navbar .center-button,
+.navbar .right-button {
+  display: flex;
+  gap: 10px;
+}
+
+/* Navbar buttons */
+.navbar button {
+  background: linear-gradient(90deg, #ff00cc, #8000ff);
+  border: none;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.navbar button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(255,0,204,0.6);
+}
+
+/* Main content */
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 70px; /* Navbar balandligi uchun */
+  padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .content {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .content {
+    font-size: 1.2rem;
+    padding: 0 10px;
+  }
+}
+</style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="left-buttons">
+      <button>Messages</button>
+      <button>Friends</button>
+    </div>
+
+    <div class="center-button">
+      <button>Magazin</button>
+    </div>
+
+    <div class="right-button">
+      <button>Sozlamalar</button>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+    <p>🌟 Asosiy sahifa! Shu yerga kontent qo‘shishingiz mumkin.</p>
+  </div>
+
+</body>
+</html>

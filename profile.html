@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #ff00bb;
+    }
+</style>
+<body class="welcome-body">
+
+  <div class="welcome-box">
+    <h1>Xush kelibsiz!</h1>
+    <h2 id="showName"></h2>
+  </div>
+
+  <script>
+    document.getElementById("showName").textContent =
+      "Sizning tanlagan nicknamengiz: " + localStorage.getItem("nickname");
+  </script>
+
+</body>
+</html>

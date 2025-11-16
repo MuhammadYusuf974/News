@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In</title>
   <link rel="stylesheet" href="style.css">
+<<<<<<< HEAD
+=======
+  <link rel="website icon" href="1832638.png">
+  <link rel="import" href="CreateName.html">
+>>>>>>> 543f35f (Initial commit: main page with navbar)
 </head>
 <body>
   <div class="container">
@@ -17,6 +22,7 @@
 
     <div class="right-side">
       <h2>Sign in</h2>
+<<<<<<< HEAD
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
 
       <form>
@@ -28,6 +34,14 @@
         <div class="input-group">
           <label for="password">Parol</label>
           <input type="password" id="password" placeholder="••••••••">
+=======
+      <p>Please Sign in to have big fun !!!!</p>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" placeholder="example@gmail.com">
+>>>>>>> 543f35f (Initial commit: main page with navbar)
         </div>
 
         <div class="options">
@@ -35,7 +49,13 @@
           <a href="#">Forgot password?</a>
         </div>
 
+<<<<<<< HEAD
         <button type="submit" class="btn-primary">Sign in</button>
+=======
+        <button  
+        type="submit" class="btn-primary" id="nextBtn">Next <a href="CreateName.html"></a>
+        </button>
+>>>>>>> 543f35f (Initial commit: main page with navbar)
         <button type="button" class="btn-secondary">Sign in with other</button>
 
         <p class="signup-text">
@@ -44,5 +64,24 @@
       </form>
     </div>
   </div>
+<<<<<<< HEAD
+=======
+
+  <script src="script.js">
+const loginForm = document.getElementById('loginForm');
+
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // formani default yuborilishini to'xtatadi
+    const email = document.getElementById('email').value;
+
+    if(email) { // agar email bo'sh bo'lmasa
+        window.location.href = 'CreateName.html'; // sahifaga o'tish
+    } else {
+        alert('Iltimos, emailni kiriting!');
+    }
+});
+
+  </script>
+>>>>>>> 543f35f (Initial commit: main page with navbar)
 </body>
 </html>
