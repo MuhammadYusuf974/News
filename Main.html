@@ -4,125 +4,273 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Main Page</title>
-<link rel="webbsite icon" href="button-design-cta-call-action-with-colorful-gradient-modern-style_728830-1153.avif">
+<link rel="icon" href="button-design-cta-call-action-with-colorful-gradient-modern-style_728830-1153.avif">
 <style>
-/* Umumiy style */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
 body {
-  background: linear-gradient(135deg, #1e3c72, #2a5298); /* chiroyli gradient */
+  background: linear-gradient(135deg, #6A529F 0%, #563977 75%, #261949 100%);
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  position: relative;
+  overflow: hidden;
 }
-
-/* Navbar eng tepa */
-.navbar {
+#bulut-canvas {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(0,0,0,0.85);
-  padding: 12px 20px;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  z-index: 100;
+  z-index: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 }
-
-/* Buttons container */
-.navbar .left-buttons,
-.navbar .center-button,
-.navbar .right-button {
-  display: flex;
-  gap: 10px;
+.topbar-options {
+  position: fixed;
+  left: 28px;
+  top: 28px;
+  z-index: 12;
 }
-
-/* Navbar buttons */
-.navbar button {
-  background: linear-gradient(90deg, #ff00cc, #8000ff);
+.options-btn {
+  background: #222735;
   border: none;
-  color: #fff;
-  padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: 14px;
+  box-shadow: 0 1px 10px #20193d33;
+  padding: 13px 16px 13px 16px;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .23s;
+}
+.options-btn:hover,
+.options-btn.active {
+  background: #232a3a;
+}
+.options-icon {
+  width: 38px;
+  height: 38px;
 }
 
-.navbar button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(255,0,204,0.6);
+/* Options modal - opens vertically, even larger ("dlinaga") */
+.options-modal {
+  position: absolute;
+  left: 0;
+  top: 56px;
+  background: #161d27;
+  box-shadow: 0 12px 40px #130f2270;
+  border-radius: 18px;
+  min-width: 230px;
+  min-height: 320px;
+  max-height: 76vh;
+  padding: 35px 0 25px 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px) scale(0.96);
+  transition: opacity .23s, transform .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
 }
 
-/* Main content */
+/* Modal active styles */
+.options-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+.options-modal .panel-title {
+  color: #9ab5e7;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 24px 18px 24px;
+  letter-spacing: .03em;
+  border-bottom: 1px solid #202b3c;
+  margin-bottom: 15px;
+}
+/* Each item */
+.options-modal .panel-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 30px;
+  color: #93a1bd;
+  font-size: 1.17rem;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background .22s, color .2s;
+}
+.options-modal .panel-item:hover {
+  background: #202b3c;
+  color: #dde7ff;
+}
+.panel-item svg { flex-shrink: 0; }
+
 .content {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 1.6rem;
+  align-items: flex-start;
+  color: #f6f6fc;
+  font-size: 2.2rem;
   text-align: center;
-  margin-top: 70px; /* Navbar balandligi uchun */
   padding: 20px;
+  margin-left: 80px;
+  z-index: 1;
+  position: relative;
+  min-height: 350px;
+}
+.typing {
+  border-right: .13em solid #b7a6e7;
+  white-space: nowrap;
+  overflow: hidden;
+  animation:
+    typing 2.7s steps(26, end),
+    blink-caret .75s step-end infinite;
+  font-size: 2.3rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  background: linear-gradient(90deg, #e9e3ff 0%, #41296a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 40px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .content {
-    font-size: 1.4rem;
-  }
+@keyframes typing {
+  from { width: 0; }
+  to { width: 26ch; }
 }
-
-@media (max-width: 480px) {
-  .navbar button {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .content {
-    font-size: 1.2rem;
-    padding: 0 10px;
-  }
+@keyframes blink-caret {
+  0%, 100% { border-color: transparent }
+  50% { border-color: #b7a6e7; }
 }
 </style>
 </head>
 <body>
-
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="left-buttons">
-      <button>Messages</button>
-      <button>Friends</button>
-    </div>
-
-    <div class="center-button">
-      <button>Magazin</button>
-    </div>
-
-    <div class="right-button">
-      <button>Sozlamalar</button>
+  <canvas id="bulut-canvas"></canvas>
+  
+  <!-- TOPBAR Options - left, telegram style -->
+  <div class="topbar-options">
+    <button class="options-btn" id="optionsBtn" title="Options">
+      <svg class="options-icon" viewBox="0 0 64 64">
+        <rect x="16" y="22" width="32" height="4" rx="2.5" fill="#a7cafe"/>
+        <rect x="16" y="30" width="32" height="4" rx="2.5" fill="#a7cafe"/>
+        <rect x="16" y="38" width="24" height="4" rx="2.5" fill="#a7cafe"/>
+        <circle cx="50" cy="40" r="4" fill="#3fa7ff"/>
+      </svg>
+    </button>
+    <!-- MODAL PANEL - Options -->
+    <div class="options-modal" id="optionsModal">
+      <div class="panel-title">Options</div>
+      <div class="panel-item">
+        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M6 8.3a.9.9 0 0 1 .9-.9h7.2a.9.9 0 0 1 .9.9v5.2a.9.9 0 0 1-.9.9H9.1L6.7 17.2a.46.46 0 0 1-.7-.4V8.3Z" fill="#aad1ff"></path></svg>
+        Messages
+      </div>
+      <div class="panel-item">
+        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M10.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1.3c-2.2 0-4 1.4-4 3.1v.6c0 .4.3.7.7.7h6.6c.4 0 .7-.3.7-.7v-.6c0-1.7-1.8-3.1-4-3.1z" fill="#aad1ff"></path></svg>
+        Friends
+      </div>
+      <div class="panel-item">
+        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><rect x="7.5" y="7.5" width="6" height="6" rx="1.2" fill="#aad1ff"/><text x="10.5" y="15" text-anchor="middle" font-size="4" fill="#5273b2" font-family="Arial" dy="-0.5">M</text></svg>
+        Magazin
+      </div>
+      <div class="panel-item">
+        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M11.4 10.4a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0zM10.5 6.7a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8zm0 7.9a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8z" fill="#aad1ff"></path></svg>
+        Settings
+      </div>
     </div>
   </div>
 
-  <!-- Main content -->
   <div class="content">
-    <p>🌟 Asosiy sahifa! Shu yerga kontent qo‘shishingiz mumkin.</p>
+    <span class="typing">All of 1 saytiga xush kelibsiz!</span>
   </div>
 
+  <script>
+    // Flying liquid glass blobs -- modified for dark background
+    const canvas = document.getElementById('bulut-canvas');
+    const ctx = canvas.getContext('2d');
+    let W = window.innerWidth;
+    let H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+    const colors = [
+      ["#6442a0", "#4e367e"],
+      ["#cabfff", "#321553"],
+      ["#7c67b6", "#cab2ff"],
+      ["#2d1540", "#cab2ff"],
+      ["#cab2ff", "#7c67b6"]
+    ];
+    const bulutlar = Array.from({length: 8}, (_,i) => ({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      r: 90 + Math.random()*70,
+      vx: 1 + Math.random()*0.7,
+      vy: 0.7 + Math.random()*1.0,
+      alpha: 0.32 + Math.random()*0.22,
+      gradient: colors[Math.floor(Math.random() * colors.length)]
+    }));
+    function drawBulut(b) {
+      let grad = ctx.createRadialGradient(b.x, b.y, b.r*0.2, b.x, b.y, b.r);
+      grad.addColorStop(0, b.gradient[0]);
+      grad.addColorStop(1, b.gradient[1]);
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(b.x, b.y, b.r, b.r*(0.6+Math.random()*0.4), Math.random()*2, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.globalAlpha = b.alpha;
+      ctx.shadowColor = "#cabffe";
+      ctx.shadowBlur = 45;
+      ctx.fillStyle = grad;
+      ctx.strokeStyle = "rgba(255,255,255,0.24)";
+      ctx.lineWidth = 7;
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+    function animate() {
+      ctx.clearRect(0,0,W,H);
+      for(let b of bulutlar) {
+        drawBulut(b);
+        b.x += b.vx; b.y += b.vy;
+        if(b.x-b.r > W) { b.x = -b.r; b.y = Math.random()*H; }
+        if(b.y-b.r > H) { b.y = -b.r; b.x = Math.random()*W; }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', ()=>{
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W;
+      canvas.height = H;
+    });
+
+    // Options modal toggler
+    const optionsBtn = document.getElementById('optionsBtn');
+    const optionsModal = document.getElementById('optionsModal');
+    optionsBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      optionsModal.classList.toggle('active');
+      optionsBtn.classList.toggle('active');
+    });
+    // Close modal on outside click
+    document.addEventListener('click', function(e){
+      if (!optionsModal.contains(e.target) && !optionsBtn.contains(e.target)){
+        optionsModal.classList.remove('active');
+        optionsBtn.classList.remove('active');
+      }
+    });
+    // Keyboard accessibility
+    optionsBtn.addEventListener('keydown', function(e){
+      if(e.key === "Enter" || e.key === " "){
+        optionsModal.classList.toggle('active');
+        optionsBtn.classList.toggle('active');
+      }
+    });
+  </script>
 </body>
 </html>
