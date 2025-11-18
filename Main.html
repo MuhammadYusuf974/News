@@ -4,125 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Main Page</title>
-<link rel="icon" href="button-design-cta-call-action-with-colorful-gradient-modern-style_728830-1153.avif">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 body {
   background: linear-gradient(135deg, #6A529F 0%, #563977 75%, #261949 100%);
-  min-height: 100vh;
+  min-height: 600vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 #bulut-canvas {
   position: fixed;
   z-index: 0;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 600vh;
   pointer-events: none;
 }
-.topbar-options {
-  position: fixed;
-  left: 28px;
-  top: 28px;
-  z-index: 12;
-}
-.options-btn {
-  background: #222735;
-  border: none;
-  border-radius: 14px;
-  box-shadow: 0 1px 10px #20193d33;
-  padding: 13px 16px 13px 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .23s;
-}
-.options-btn:hover,
-.options-btn.active {
-  background: #232a3a;
-}
-.options-icon {
-  width: 38px;
-  height: 38px;
-}
 
-/* Options modal - opens vertically, even larger ("dlinaga") */
-.options-modal {
-  position: absolute;
-  left: 0;
-  top: 56px;
-  background: #161d27;
-  box-shadow: 0 12px 40px #130f2270;
-  border-radius: 18px;
-  min-width: 230px;
-  min-height: 320px;
-  max-height: 76vh;
-  padding: 35px 0 25px 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-12px) scale(0.96);
-  transition: opacity .23s, transform .2s;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-}
-
-/* Modal active styles */
-.options-modal.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-.options-modal .panel-title {
-  color: #9ab5e7;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0 24px 18px 24px;
-  letter-spacing: .03em;
-  border-bottom: 1px solid #202b3c;
-  margin-bottom: 15px;
-}
-/* Each item */
-.options-modal .panel-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 22px 30px;
-  color: #93a1bd;
-  font-size: 1.17rem;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: background .22s, color .2s;
-}
-.options-modal .panel-item:hover {
-  background: #202b3c;
-  color: #dde7ff;
-}
-.panel-item svg { flex-shrink: 0; }
-
+/* Typing animatsiyasi */
 .content {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   color: #f6f6fc;
-  font-size: 2.2rem;
+  font-size: 2.1rem;
   text-align: center;
-  padding: 20px;
-  margin-left: 80px;
+  padding: 16px;
+  margin-top: 46px;
   z-index: 1;
   position: relative;
-  min-height: 350px;
+  min-height: 300px;
 }
 .typing {
   border-right: .13em solid #b7a6e7;
@@ -131,7 +45,7 @@ body {
   animation:
     typing 2.7s steps(26, end),
     blink-caret .75s step-end infinite;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
   font-weight: 600;
   letter-spacing: .03em;
   background: linear-gradient(90deg, #e9e3ff 0%, #41296a 100%);
@@ -139,7 +53,6 @@ body {
   -webkit-text-fill-color: transparent;
   margin-top: 40px;
 }
-
 @keyframes typing {
   from { width: 0; }
   to { width: 26ch; }
@@ -148,129 +61,339 @@ body {
   0%, 100% { border-color: transparent }
   50% { border-color: #b7a6e7; }
 }
+
+/* Pastki icons panel */
+.icons-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 13;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+  background: #161d27ee;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -7px 30px #130f2270;
+  padding: 12px 0 14px 0;
+  overflow-x: auto;
+  max-width: 100vw;
+}
+.icons-bar .panel-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #93a1bd;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  transition: background .22s,color .2s;
+  min-width: 95px;
+  padding: 0 9px;
+  height: 40px;
+}
+.icons-bar .panel-item:hover {
+  background: #202b3c;
+  color: #dde7ff;
+}
+.icons-bar svg { flex-shrink: 0; width:19px; height:19px; }
+
+/* Magazin animatsion modal */
+.magazin-modal {
+  position: fixed;
+  left: 0; right: 0; bottom: 56px;
+  max-width: 370px;
+  margin: auto;
+  background: #191d2e;
+  border-radius: 20px;
+  box-shadow: 0 10px 34px #23104a66;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  transition: opacity .36s cubic-bezier(.77, .18, .41, 1.05),
+              transform .31s cubic-bezier(.68, .23, .49, 1.03),
+              filter .25s;
+  opacity: 0;
+  transform: scale(.89) translateY(40px);
+  filter: blur(10px);
+  pointer-events: none;
+  padding: 21px 18px 18px 18px;
+  color: #f6f6fc;
+}
+.magazin-modal.active {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+.magazin-modal .m-title {
+  font-size: 1.28rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin-bottom: 4px;
+  color: #c7dbff;
+}
+.magazin-modal .m-desc {
+  font-size: 1.02rem;
+  color: #aad1ff;
+  margin-bottom: 15px;
+}
+.magazin-modal .product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 6px;
+}
+.magazin-modal .product-item {
+  background: #251b41ed;
+  border-radius: 13px;
+  padding: 14px 12px 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  box-shadow: 0 1px 9px #32155325;
+}
+.magazin-modal .product-icon {
+  font-size: 2.1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.magazin-modal .product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.magazin-modal .product-title {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e9e3ff;
+}
+.magazin-modal .product-desc {
+  font-size: 0.96rem;
+  color: #aad1ff;
+}
+.magazin-modal .product-buy {
+  background: linear-gradient(90deg,#363b6b 70%,#3fa7ff 120%);
+  color: #e9e3ff;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  font-size: 0.97rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background .22s, color .2s;
+  box-shadow: 0 2px 10px #3fa7ff22;
+}
+.magazin-modal .product-buy:active {
+  background: linear-gradient(90deg,#2d3358 30%,#267ace 100%);
+}
+
+.magazin-modal .close-btn {
+  position: absolute;
+  top: 8px; right: 9px;
+  background: none;
+  border: none;
+  color: #c7dbff;
+  font-size: 1.18rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.m-status-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  margin: auto;
+  max-width: 370px;
+  background: #251b41f7;
+  color: #a7cafe;
+  z-index: 101;
+  padding: 10px 16px;
+  border-radius: 0 0 14px 14px;
+  font-size: 1.13rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 5px 22px #191d2e7a;
+  display: none;
+  letter-spacing: .05em;
+}
+.m-status-bar.active { display: block; }
+
+/* Magazin mobil uchun! */
+@media (max-width:600px){
+  .magazin-modal, .m-status-bar { max-width:94vw; }
+  .magazin-modal { left: 2vw; right: 2vw;}
+}
+
+/* Magazin uchun animatsion overlay */
+.magazin-overlay {
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(34,30,66,0.17);
+  z-index: 98;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s cubic-bezier(.67,.12,.44,.86);
+}
+.magazin-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 </style>
 </head>
 <body>
   <canvas id="bulut-canvas"></canvas>
-  
-  <!-- TOPBAR Options - left, telegram style -->
-  <div class="topbar-options">
-    <button class="options-btn" id="optionsBtn" title="Options">
-      <svg class="options-icon" viewBox="0 0 64 64">
-        <rect x="16" y="22" width="32" height="4" rx="2.5" fill="#a7cafe"/>
-        <rect x="16" y="30" width="32" height="4" rx="2.5" fill="#a7cafe"/>
-        <rect x="16" y="38" width="24" height="4" rx="2.5" fill="#a7cafe"/>
-        <circle cx="50" cy="40" r="4" fill="#3fa7ff"/>
-      </svg>
-    </button>
-    <!-- MODAL PANEL - Options -->
-    <div class="options-modal" id="optionsModal">
-      <div class="panel-title">Options</div>
-      <div class="panel-item">
-        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M6 8.3a.9.9 0 0 1 .9-.9h7.2a.9.9 0 0 1 .9.9v5.2a.9.9 0 0 1-.9.9H9.1L6.7 17.2a.46.46 0 0 1-.7-.4V8.3Z" fill="#aad1ff"></path></svg>
-        Messages
-      </div>
-      <div class="panel-item">
-        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M10.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1.3c-2.2 0-4 1.4-4 3.1v.6c0 .4.3.7.7.7h6.6c.4 0 .7-.3.7-.7v-.6c0-1.7-1.8-3.1-4-3.1z" fill="#aad1ff"></path></svg>
-        Friends
-      </div>
-      <div class="panel-item">
-        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><rect x="7.5" y="7.5" width="6" height="6" rx="1.2" fill="#aad1ff"/><text x="10.5" y="15" text-anchor="middle" font-size="4" fill="#5273b2" font-family="Arial" dy="-0.5">M</text></svg>
-        Magazin
-      </div>
-      <div class="panel-item">
-        <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M11.4 10.4a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0zM10.5 6.7a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8zm0 7.9a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8z" fill="#aad1ff"></path></svg>
-        Settings
-      </div>
-    </div>
-  </div>
-
   <div class="content">
     <span class="typing">All of 1 saytiga xush kelibsiz!</span>
   </div>
+  <!-- Magazin overlay + modal -->
+  <div class="magazin-overlay" id="magazinOverlay"></div>
+  <div class="magazin-modal" id="magazinModal">
+    <button class="close-btn" onclick="closeMagazin()" title="Yopish">&times;</button>
+    <div class="m-title">Magazin</div>
+    <div class="m-desc">Premiumlar va Stikerlarni tekin xarid qiling!</div>
+    <div class="product-list">
+      <div class="product-item">
+        <span class="product-icon">💎</span>
+        <div class="product-info">
+          <div class="product-title">All of 1 Premium</div>
+          <div class="product-desc">Profilingizda premium status ochiladi</div>
+        </div>
+        <button class="product-buy" onclick="buyProd('premium')">Tekinga ol</button>
+      </div>
+      <div class="product-item">
+        <span class="product-icon">🔥</span>
+        <div class="product-info">
+          <div class="product-title">Fire Sticker</div>
+          <div class="product-desc">Chatda yonuvchi sticker ishlata olasiz</div>
+        </div>
+        <button class="product-buy" onclick="buyProd('fire')">Tekinga ol</button>
+      </div>
+      <div class="product-item">
+        <span class="product-icon">🎩</span>
+        <div class="product-info">
+          <div class="product-title">VIP Hat Sticker</div>
+          <div class="product-desc">Chatda VIP shlyapa sticker ishlata olasiz</div>
+        </div>
+        <button class="product-buy" onclick="buyProd('hat')">Tekinga ol</button>
+      </div>
+    </div>
+  </div>
+  <!-- Status bar - sotib olinganini ko'rsatadi -->
+  <div class="m-status-bar" id="statusBar"></div>
 
-  <script>
-    // Flying liquid glass blobs -- modified for dark background
-    const canvas = document.getElementById('bulut-canvas');
-    const ctx = canvas.getContext('2d');
-    let W = window.innerWidth;
-    let H = window.innerHeight;
-    canvas.width = W;
-    canvas.height = H;
-    const colors = [
-      ["#6442a0", "#4e367e"],
-      ["#cabfff", "#321553"],
-      ["#7c67b6", "#cab2ff"],
-      ["#2d1540", "#cab2ff"],
-      ["#cab2ff", "#7c67b6"]
-    ];
-    const bulutlar = Array.from({length: 8}, (_,i) => ({
-      x: Math.random()*W,
-      y: Math.random()*H,
-      r: 90 + Math.random()*70,
-      vx: 1 + Math.random()*0.7,
-      vy: 0.7 + Math.random()*1.0,
-      alpha: 0.32 + Math.random()*0.22,
-      gradient: colors[Math.floor(Math.random() * colors.length)]
-    }));
-    function drawBulut(b) {
-      let grad = ctx.createRadialGradient(b.x, b.y, b.r*0.2, b.x, b.y, b.r);
-      grad.addColorStop(0, b.gradient[0]);
-      grad.addColorStop(1, b.gradient[1]);
-      ctx.save();
-      ctx.beginPath();
-      ctx.ellipse(b.x, b.y, b.r, b.r*(0.6+Math.random()*0.4), Math.random()*2, 0, Math.PI*2);
-      ctx.closePath();
-      ctx.globalAlpha = b.alpha;
-      ctx.shadowColor = "#cabffe";
-      ctx.shadowBlur = 45;
-      ctx.fillStyle = grad;
-      ctx.strokeStyle = "rgba(255,255,255,0.24)";
-      ctx.lineWidth = 7;
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
-    }
-    function animate() {
-      ctx.clearRect(0,0,W,H);
-      for(let b of bulutlar) {
-        drawBulut(b);
-        b.x += b.vx; b.y += b.vy;
-        if(b.x-b.r > W) { b.x = -b.r; b.y = Math.random()*H; }
-        if(b.y-b.r > H) { b.y = -b.r; b.x = Math.random()*W; }
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-    window.addEventListener('resize', ()=>{
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width = W;
-      canvas.height = H;
-    });
+  <div class="icons-bar">
+    <div class="panel-item">
+      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#3fa7ff"/><path d="M10.5 6c-1.19 0-2.16.96-2.16 2.16v4.68c0 1.2.97 2.16 2.16 2.16s2.16-.96 2.16-2.16V8.16C12.66 6.96 11.69 6 10.5 6zm0 9.05a3.21 3.21 0 0 1-3.21-3.21V8.16A3.21 3.21 0 0 1 10.5 4.95a3.21 3.21 0 0 1 3.21 3.21v3.68a3.21 3.21 0 0 1-3.21 3.21z" fill="#aad1ff"></path></svg>
+      Global
+    </div>
+    <div class="panel-item">
+      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M6 8.3a.9.9 0 0 1 .9-.9h7.2a.9.9 0 0 1 .9.9v5.2a.9.9 0 0 1-.9.9H9.1L6.7 17.2a.46.46 0 0 1-.7-.4V8.3Z" fill="#aad1ff"></path></svg>
+      Messages
+    </div>
+    <div class="panel-item">
+      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M10.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1.3c-2.2 0-4 1.4-4 3.1v.6c0 .4.3.7.7.7h6.6c.4 0 .7-.3.7-.7v-.6c0-1.7-1.8-3.1-4-3.1z" fill="#aad1ff"></path></svg>
+      Friends
+    </div>
+    <div class="panel-item" onclick="openMagazin()">
+      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><rect x="7.5" y="7.5" width="6" height="6" rx="1.2" fill="#aad1ff"/><text x="10.5" y="15" text-anchor="middle" font-size="4" fill="#5273b2" font-family="Arial" dy="-0.5">M</text></svg>
+      Magazin
+    </div>
+    <div class="panel-item">
+      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M11.4 10.4a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0zM10.5 6.7a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8zm0 7.9a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8z" fill="#aad1ff"></path></svg>
+      Settings
+    </div>
+  </div>
 
-    // Options modal toggler
-    const optionsBtn = document.getElementById('optionsBtn');
-    const optionsModal = document.getElementById('optionsModal');
-    optionsBtn.addEventListener('click', function(e){
-      e.stopPropagation();
-      optionsModal.classList.toggle('active');
-      optionsBtn.classList.toggle('active');
-    });
-    // Close modal on outside click
-    document.addEventListener('click', function(e){
-      if (!optionsModal.contains(e.target) && !optionsBtn.contains(e.target)){
-        optionsModal.classList.remove('active');
-        optionsBtn.classList.remove('active');
-      }
-    });
-    // Keyboard accessibility
-    optionsBtn.addEventListener('keydown', function(e){
-      if(e.key === "Enter" || e.key === " "){
-        optionsModal.classList.toggle('active');
-        optionsBtn.classList.toggle('active');
-      }
-    });
-  </script>
+<script>
+/* BULUT ANIMATSIYASI - FON */
+const canvas = document.getElementById('bulut-canvas');
+const ctx = canvas.getContext('2d');
+let W = window.innerWidth;
+let H = 600 * window.innerHeight / 100;
+canvas.width = W;
+canvas.height = H;
+const colors = [
+  ["#6442a0", "#4e367e"],
+  ["#cabfff", "#321553"],
+  ["#7c67b6", "#cab2ff"],
+  ["#2d1540", "#cab2ff"],
+  ["#cab2ff", "#7c67b6"]
+];
+const bulutlar = Array.from({length: 8}, (_,i) => ({
+  x: Math.random()*W,
+  y: Math.random()*H,
+  r: 90 + Math.random()*70,
+  vx: 1 + Math.random()*0.7,
+  vy: 0.7 + Math.random()*1.0,
+  alpha: 0.32 + Math.random()*0.22,
+  gradient: colors[Math.floor(Math.random() * colors.length)]
+}));
+function drawBulut(b) {
+  let grad = ctx.createRadialGradient(b.x, b.y, b.r*0.2, b.x, b.y, b.r);
+  grad.addColorStop(0, b.gradient[0]);
+  grad.addColorStop(1, b.gradient[1]);
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(b.x, b.y, b.r, b.r*(0.6+Math.random()*0.4), Math.random()*2, 0, Math.PI*2);
+  ctx.closePath();
+  ctx.globalAlpha = b.alpha;
+  ctx.shadowColor = "#cabffe";
+  ctx.shadowBlur = 45;
+  ctx.fillStyle = grad;
+  ctx.strokeStyle = "rgba(255,255,255,0.24)";
+  ctx.lineWidth = 7;
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+}
+function animate() {
+  ctx.clearRect(0,0,W,H);
+  for(let b of bulutlar) {
+    drawBulut(b);
+    b.x += b.vx; b.y += b.vy;
+    if(b.x-b.r > W) { b.x = -b.r; b.y = Math.random()*H; }
+    if(b.y-b.r > H) { b.y = -b.r; b.x = Math.random()*W; }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+window.addEventListener('resize', ()=>{
+  W = window.innerWidth;
+  H = 600 * window.innerHeight / 100;
+  canvas.width = W;
+  canvas.height = H;
+});
+
+/* MAGAZIN ANIMATSIYA + YOPISH OVERLAY */
+function openMagazin(){
+  document.getElementById('magazinModal').classList.add('active');
+  document.getElementById('magazinOverlay').classList.add('active');
+}
+function closeMagazin(){
+  document.getElementById('magazinModal').classList.remove('active');
+  document.getElementById('magazinOverlay').classList.remove('active');
+}
+document.getElementById('magazinOverlay').onclick = closeMagazin;
+
+function buyProd(prod){
+  let status = '';
+  if(prod==='premium') status = 'All of 1 Premium sotib olindi!';
+  if(prod==='fire') status = 'Fire Sticker tekin olindi!';
+  if(prod==='hat') status = 'VIP Hat Sticker tekin olindi!';
+  showStatus(status);
+}
+function showStatus(txt){
+  let el = document.getElementById('statusBar');
+  el.textContent = txt;
+  el.classList.add('active');
+  setTimeout(() => { el.classList.remove('active'); }, 2600);
+}
+</script>
 </body>
 </html>

@@ -144,7 +144,17 @@ body.welcome-body {
     <p id="msg" style="margin-top:15px; color:yellow;"></p>
   </div>
 
-  <script src="CreatName.js"></script>
+  <script src="CreatName.js"></script><!-- SignIn.html -->
+<input type="text" id="name" placeholder="Ismingiz" required>
+<!-- ... boshqa kod ... -->
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var ism = document.getElementById('name').value;
+    localStorage.setItem('userName', ism);
+    window.location.href = 'Main.html';
+  });
+</script>
 
 </body>
 </html>
