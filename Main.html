@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>All of 1 — Demo</title>
 <link rel="icon" href="" />
+<link rel="websiteicon" href="1832638.png">
 <style>
   :root{
     --bg1: #6A529F;
@@ -183,9 +184,93 @@
 
   /* responsive */
   @media (max-width:980px){ .app{grid-template-columns:1fr} .sidebar{order:2} .main{order:1} .profile-card{position:sticky;top:12px} }
+  .garland {
+  position: fixed;
+  left: 0; right: 0; top: 0;
+  height: 48px;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+  padding: 12px 0;
+}
+
+.garland-light {
+  width: 18px; height: 18px;
+  border-radius: 999px;
+  box-shadow: 0 0 18px #fff8, 0 0 8px #fff4;
+  animation: garland-blink 2.2s infinite;
+  margin-bottom: 4px;
+  border: 2px solid #fff3;
+}
+
+.garland-light1 { background: #ff5353; animation-delay: 0s;}
+.garland-light2 { background: #ffe347; animation-delay: .3s;}
+.garland-light3 { background: #3aff79; animation-delay: .6s;}
+.garland-light4 { background: #53baff; animation-delay: .9s;}
+.garland-light5 { background: #ff99ff; animation-delay: 1.2s;}
+.garland-light6 { background: #ffa543; animation-delay: 1.5s;}
+@keyframes garland-blink {
+  0%,100%{ opacity:.85; }
+  40%{ opacity:1; box-shadow:0 0 28px #fffC; }
+  60%{ opacity:.7; }
+}
+#snow {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+}
+/* Gerlyanda chiroqlari */
+.garland {
+  position: fixed;
+  left: 0; right: 0; top: 0;
+  height: 48px;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+  padding: 12px 0;
+}
+
+.garland-light {
+  width: 18px; height: 18px;
+  border-radius: 999px;
+  box-shadow: 0 0 18px #fff8, 0 0 8px #fff4;
+  animation: garland-blink 2.2s infinite;
+  margin-bottom: 4px;
+  border: 2px solid #fff3;
+}
+
+.garland-light1 { background: #ff5353; animation-delay: 0s;}
+.garland-light2 { background: #ffe347; animation-delay: .3s;}
+.garland-light3 { background: #3aff79; animation-delay: .6s;}
+.garland-light4 { background: #53baff; animation-delay: .9s;}
+.garland-light5 { background: #ff99ff; animation-delay: 1.2s;}
+.garland-light6 { background: #ffa543; animation-delay: 1.5s;}
+@keyframes garland-blink {
+  0%,100%{ opacity:.85; }
+  40%{ opacity:1; box-shadow:0 0 28px #fffC; }
+  60%{ opacity:.7; }
+}
+
+/* Snow canvas */
+#snow {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+}
 </style>
 </head>
 <body>
+  <!-- Gerlyanda chiroqlari -->
+<div class="garland"></div>
+<canvas id="snow"></canvas>
 
 <!-- Magazin modal -->
 <div class="magazin-overlay" id="magazinOverlay" aria-hidden="true">
@@ -580,7 +665,60 @@ function showStatus(t){ console.log(t); }
 
 /* dastlabki yuklash */
 applyProfile();
+// Gerlyanda chiroqlari soni
+const garland = document.querySelector('.garland');
+for(let i=1; i<=10; i++){
+  const d = document.createElement('div');
+  d.className = `garland-light garland-light${(i%6)+1}`;
+  garland.appendChild(d);
+}
+// Qor effecti uchun
+const snowCanvas = document.getElementById('snow');
+const ctx = snowCanvas.getContext('2d');
+let W = window.innerWidth, H = window.innerHeight;
+snowCanvas.width = W; snowCanvas.height = H;
 
+const snowflakes = [];
+for(let i=0;i<70;i++){
+  snowflakes.push({
+    x:Math.random()*W,
+    y:Math.random()*H,
+    r: 1.5+Math.random()*3,
+    d:Math.random()*70
+  });
+}
+
+function drawSnow(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,0.8)';
+  ctx.beginPath();
+  for(const s of snowflakes){
+    ctx.moveTo(s.x, s.y);
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2, true);
+  }
+  ctx.fill();
+  updateSnow();
+}
+
+let angle=0;
+function updateSnow(){
+  angle += 0.01;
+  for(let i=0;i<snowflakes.length;i++){
+    const s=snowflakes[i];
+    s.y += Math.cos(angle+s.d)+1+s.r/2;
+    s.x += Math.sin(angle)*2;
+    if(s.x > W+5 || s.x < -5 || s.y > H){
+      s.x = Math.random()*W;
+      s.y = -10;
+    }
+  }
+}
+
+setInterval(drawSnow,30);
+window.addEventListener('resize', ()=>{
+  W=window.innerWidth;H=window.innerHeight;
+  snowCanvas.width=W;snowCanvas.height=H;
+});
 </script>
 
 </body>
