@@ -38,10 +38,16 @@ function saveName() {
         window.location.href = "Main.html";
     }, 2000);
 }
-document.getElementById("saveBtn").addEventListener("click", saveName);
-document.getElementById("fakeName").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Formni yuborishni to'xtatadi
-        saveName();
-    }
-});
+const saveBtn = document.getElementById("saveBtn");
+if (saveBtn) {
+    saveBtn.addEventListener("click", saveName);
+}
+const fakeNameInput = document.getElementById("fakeName");
+if (fakeNameInput) {
+    fakeNameInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Formni yuborishni to'xtatadi
+            saveName();
+        }
+    });
+}

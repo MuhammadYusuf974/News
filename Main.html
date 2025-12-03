@@ -1,399 +1,587 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Main Page</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>All of 1 — Demo</title>
+<link rel="icon" href="" />
 <style>
-body {
-  background: linear-gradient(135deg, #6A529F 0%, #563977 75%, #261949 100%);
-  min-height: 600vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow-x: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-#bulut-canvas {
-  position: fixed;
-  z-index: 0;
-  inset: 0;
-  width: 100vw;
-  height: 600vh;
-  pointer-events: none;
-}
+  :root{
+    --bg1: #6A529F;
+    --bg2: #261949;
+    --card: #191d2e;
+    --muted: #93a1bd;
+    --accent: #3fa7ff;
+    --glass: rgba(25,29,46,0.6);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:Inter, "Segoe UI", system-ui, Arial;}
+  body{
+    min-height:100vh;
+    background: linear-gradient(135deg,var(--bg1) 0%, #563977 65%, var(--bg2) 100%);
+    color:#e9e3ff;
+    padding-bottom:92px; /* for bottom bar */
+  }
 
-/* Typing animatsiyasi */
-.content {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  color: #f6f6fc;
-  font-size: 2.1rem;
-  text-align: center;
-  padding: 16px;
-  margin-top: 46px;
-  z-index: 1;
-  position: relative;
-  min-height: 300px;
-}
-.typing {
-  border-right: .13em solid #b7a6e7;
-  white-space: nowrap;
-  overflow: hidden;
-  animation:
-    typing 2.7s steps(26, end),
-    blink-caret .75s step-end infinite;
-  font-size: 2.1rem;
-  font-weight: 600;
-  letter-spacing: .03em;
-  background: linear-gradient(90deg, #e9e3ff 0%, #41296a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-top: 40px;
-}
-@keyframes typing {
-  from { width: 0; }
-  to { width: 26ch; }
-}
-@keyframes blink-caret {
-  0%, 100% { border-color: transparent }
-  50% { border-color: #b7a6e7; }
-}
+  /* Container */
+  .app {
+    max-width:1100px;
+    margin:28px auto;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
+    padding:18px;
+  }
 
-/* Pastki icons panel */
-.icons-bar {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 13;
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  justify-content: center;
-  background: #161d27ee;
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 -7px 30px #130f2270;
-  padding: 12px 0 14px 0;
-  overflow-x: auto;
-  max-width: 100vw;
-}
-.icons-bar .panel-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #93a1bd;
-  font-size: 1.1rem;
-  cursor: pointer;
-  border-radius: 10px;
-  background: transparent;
-  border: none;
-  transition: background .22s,color .2s;
-  min-width: 95px;
-  padding: 0 9px;
-  height: 40px;
-}
-.icons-bar .panel-item:hover {
-  background: #202b3c;
-  color: #dde7ff;
-}
-.icons-bar svg { flex-shrink: 0; width:19px; height:19px; }
+  /* Left column: feed + chat toggle */
+  .main {
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
 
-/* Magazin animatsion modal */
-.magazin-modal {
-  position: fixed;
-  left: 0; right: 0; bottom: 56px;
-  max-width: 370px;
-  margin: auto;
-  background: #191d2e;
-  border-radius: 20px;
-  box-shadow: 0 10px 34px #23104a66;
-  z-index: 99;
-  display: flex;
-  flex-direction: column;
-  transition: opacity .36s cubic-bezier(.77, .18, .41, 1.05),
-              transform .31s cubic-bezier(.68, .23, .49, 1.03),
-              filter .25s;
-  opacity: 0;
-  transform: scale(.89) translateY(40px);
-  filter: blur(10px);
-  pointer-events: none;
-  padding: 21px 18px 18px 18px;
-  color: #f6f6fc;
-}
-.magazin-modal.active {
-  opacity: 1;
-  filter: blur(0);
-  transform: scale(1) translateY(0);
-  pointer-events: auto;
-}
-.magazin-modal .m-title {
-  font-size: 1.28rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-  margin-bottom: 4px;
-  color: #c7dbff;
-}
-.magazin-modal .m-desc {
-  font-size: 1.02rem;
-  color: #aad1ff;
-  margin-bottom: 15px;
-}
-.magazin-modal .product-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 6px;
-}
-.magazin-modal .product-item {
-  background: #251b41ed;
-  border-radius: 13px;
-  padding: 14px 12px 12px 12px;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  box-shadow: 0 1px 9px #32155325;
-}
-.magazin-modal .product-icon {
-  font-size: 2.1rem;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.magazin-modal .product-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.magazin-modal .product-title {
-  font-size: 1.08rem;
-  font-weight: 600;
-  color: #e9e3ff;
-}
-.magazin-modal .product-desc {
-  font-size: 0.96rem;
-  color: #aad1ff;
-}
-.magazin-modal .product-buy {
-  background: linear-gradient(90deg,#363b6b 70%,#3fa7ff 120%);
-  color: #e9e3ff;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  font-size: 0.97rem;
-  font-weight: 700;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background .22s, color .2s;
-  box-shadow: 0 2px 10px #3fa7ff22;
-}
-.magazin-modal .product-buy:active {
-  background: linear-gradient(90deg,#2d3358 30%,#267ace 100%);
-}
+  /* Top header */
+  .topbar {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    justify-content:space-between;
+  }
+  .brand {
+    display:flex;align-items:center;gap:12px;
+  }
+  .logo {
+    width:56px;height:56px;border-radius:12px;
+    background:linear-gradient(90deg,#e9e3ff 0%, #41296a 100%);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#261949;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  }
+  .brand h1{font-size:1.15rem;letter-spacing:.02em}
+  .controls {display:flex;gap:8px;align-items:center;}
 
-.magazin-modal .close-btn {
-  position: absolute;
-  top: 8px; right: 9px;
-  background: none;
-  border: none;
-  color: #c7dbff;
-  font-size: 1.18rem;
-  cursor: pointer;
-  font-weight: bold;
-}
+  /* Search */
+  .search {
+    background:var(--glass);padding:8px 12px;border-radius:12px;display:flex;gap:8px;align-items:center;
+  }
+  .search input{background:transparent;border:none;color:inherit;outline:none;width:240px}
 
-.m-status-bar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  margin: auto;
-  max-width: 370px;
-  background: #251b41f7;
-  color: #a7cafe;
-  z-index: 101;
-  padding: 10px 16px;
-  border-radius: 0 0 14px 14px;
-  font-size: 1.13rem;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 5px 22px #191d2e7a;
-  display: none;
-  letter-spacing: .05em;
-}
-.m-status-bar.active { display: block; }
+  /* Feed cards */
+  .feed { display:flex;flex-direction:column; gap:12px; }
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    border-radius:var(--radius);
+    padding:14px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .card .meta {display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .avatar {
+    width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,#aad1ff,#6a529f);
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1220;
+  }
+  .meta .who {font-weight:700}
+  .meta .time {color:var(--muted);font-size:.88rem}
 
-/* Magazin mobil uchun! */
-@media (max-width:600px){
-  .magazin-modal, .m-status-bar { max-width:94vw; }
-  .magazin-modal { left: 2vw; right: 2vw;}
-}
+  .post-title{font-weight:800;margin:6px 0}
+  .post-body{color:#dfeaff;opacity:.95;line-height:1.45}
 
-/* Magazin uchun animatsion overlay */
-.magazin-overlay {
-  position: fixed;
-  left: 0; right: 0; top: 0; bottom: 0;
-  background: rgba(34,30,66,0.17);
-  z-index: 98;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s cubic-bezier(.67,.12,.44,.86);
-}
-.magazin-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
+  .post-actions{display:flex;gap:8px;margin-top:10px;color:var(--muted);font-weight:700}
+
+  /* Right column: profile + chat */
+  .sidebar {
+    display:flex;flex-direction:column;gap:14px;
+    position:relative;
+  }
+  .profile-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    padding:14px;border-radius:var(--radius);text-align:center;
+  }
+  .profile-card .big-avatar{
+    width:96px;height:96px;margin:auto;border-radius:18px;display:flex;align-items:center;justify-content:center;
+    font-size:1.8rem;font-weight:800;color:#0b1220;background:linear-gradient(90deg,#c7dbff,#8c66d6);
+    position:relative;
+    border:3px solid transparent;
+  }
+
+  /* status badge layer */
+  .status-badge {
+    position:absolute;right:-6px;bottom:-6px;background:#111; color:#fff;padding:6px 8px;border-radius:999px;font-weight:700;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    transform:translate(0,0);
+  }
+
+  .profile-info{margin-top:10px}
+  .profile-info h3{font-size:1.06rem}
+  .profile-info p{color:var(--muted);font-size:.95rem;margin-top:6px}
+
+  /* Rank classes (borders + glow) */
+  .rank-dev { border-image: linear-gradient(90deg,#6a00ff,#c892ff) 1; border-style: solid; border-width:3px; animation: devGlow 2s infinite alternate; }
+  @keyframes devGlow { from { box-shadow: 0 0 8px #6a00ff; } to { box-shadow: 0 0 26px #c892ff; } }
+
+  .rank-admin { border-image: linear-gradient(90deg,#ffd300,#fff599) 1; border-style: solid; border-width:3px; animation: adminGlow 1.8s infinite alternate; }
+  @keyframes adminGlow { from { box-shadow: 0 0 8px #ffd300; } to { box-shadow: 0 0 26px #fff599; } }
+
+  .rank-president { border-image: linear-gradient(90deg,#ff0040,#ff7e7e) 1; border-style: solid; border-width:3px; animation: presGlow 2s infinite alternate; }
+  @keyframes presGlow { from { box-shadow: 0 0 8px #ff0040; } to { box-shadow: 0 0 26px #ff7e7e; } }
+
+  .rank-vip { border-image: linear-gradient(90deg,#ffd27a,#ffb400) 1; border-style: solid; border-width:3px; animation: vipGlow 1.6s infinite alternate; }
+  @keyframes vipGlow { from { box-shadow: 0 0 6px #ffd27a; } to { box-shadow: 0 0 20px #ffb400; } }
+
+  /* status animations (fire/ice/ghost) */
+  .status-fire::after {
+    content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;
+    box-shadow: 0 0 30px rgba(255,120,50,0.45), inset 0 0 40px rgba(255,80,12,0.15);
+    mix-blend-mode:screen;pointer-events:none;
+    animation: flicker 1.6s infinite;
+  }
+  @keyframes flicker { 0%{opacity:.8}50%{opacity:1}100%{opacity:.85} }
+
+  .status-ice::after {
+    content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;
+    box-shadow: 0 0 26px rgba(120,230,255,0.36), inset 0 0 30px rgba(160,230,255,0.05);
+    animation: icePulse 2.8s infinite;
+  }
+  @keyframes icePulse { 0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)} }
+
+  .status-ghost { opacity:.92; filter:blur(.02px); animation: ghostFade 3s infinite; }
+  @keyframes ghostFade { 0%{opacity:1}50%{opacity:.6}100%{opacity:1} }
+
+  /* Chat panel */
+  .chat-panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+    border-radius:var(--radius);padding:12px;height:360px;display:flex;flex-direction:column;
+  }
+  .chat-messages { flex:1; overflow:auto; display:flex;flex-direction:column; gap:8px; padding-right:6px; margin-bottom:8px; }
+  .msg {max-width:72%; padding:8px 10px;border-radius:12px;line-height:1.3;}
+  .msg.me { align-self:flex-end; background:linear-gradient(90deg,#3fa7ff,#2777d9); color:#041022; font-weight:700;}
+  .msg.them { align-self:flex-start; background:rgba(255,255,255,0.04); color:#e6f0ff;}
+  .chat-input {display:flex; gap:8px; align-items:center;}
+  .chat-input input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+  .chat-input button{padding:10px 12px;border-radius:10px;border:none;background:var(--accent);color:#071227;font-weight:800;cursor:pointer}
+
+  /* Magazin modal (reused & improved) */
+  .magazin-overlay{ position:fixed; left:0;right:0;top:0;bottom:0;background:rgba(3,2,9,0.65);display:none;align-items:center;justify-content:center; z-index:1000}
+  .magazin-overlay.active{display:flex}
+  .magazin-modal {
+    width:min(420px,92vw); background:linear-gradient(180deg,#0e0d14, #171427); padding:18px;border-radius:16px; color:#e9e3ff; box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  .prod-grid{ display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+  .prod-item{ display:flex;gap:12px;align-items:center;padding:10px;border-radius:12px;background:rgba(255,255,255,0.02)}
+  .prod-item .ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#071227;background:linear-gradient(90deg,#c7dbff,#8c66d6)}
+  .btn {padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#071227;font-weight:800;cursor:pointer}
+
+  /* bottom icons bar (mobile-ish) */
+  .icons-bar {
+    position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:flex;justify-content:center;
+  }
+  .icons-bar .bar {
+    width:min(980px,calc(100vw - 32px));
+    background:rgba(7,10,18,0.6);padding:10px;border-radius:16px;display:flex;gap:8px;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(0,0,0,0.4);
+  }
+  .icons-bar .btn { background:transparent;border:1px solid rgba(255,255,255,0.04); color:var(--muted); padding:8px 12px;border-radius:10px; cursor:pointer; font-weight:700; }
+  .icons-bar .btn.active{ color:#e9e3ff; background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.06) }
+
+  /* responsive */
+  @media (max-width:980px){ .app{grid-template-columns:1fr} .sidebar{order:2} .main{order:1} .profile-card{position:sticky;top:12px} }
 </style>
 </head>
 <body>
-  <canvas id="bulut-canvas"></canvas>
-  <div class="content">
-    <span class="typing">All of 1 saytiga xush kelibsiz!</span>
-  </div>
-  <!-- Magazin overlay + modal -->
-  <div class="magazin-overlay" id="magazinOverlay"></div>
-  <div class="magazin-modal" id="magazinModal">
-    <button class="close-btn" onclick="closeMagazin()" title="Yopish">&times;</button>
-    <div class="m-title">Magazin</div>
-    <div class="m-desc">Premiumlar va Stikerlarni tekin xarid qiling!</div>
-    <div class="product-list">
-      <div class="product-item">
-        <span class="product-icon">💎</span>
-        <div class="product-info">
-          <div class="product-title">All of 1 Premium</div>
-          <div class="product-desc">Profilingizda premium status ochiladi</div>
-        </div>
-        <button class="product-buy" onclick="buyProd('premium')">Tekinga ol</button>
-      </div>
-      <div class="product-item">
-        <span class="product-icon">🔥</span>
-        <div class="product-info">
-          <div class="product-title">Fire Sticker</div>
-          <div class="product-desc">Chatda yonuvchi sticker ishlata olasiz</div>
-        </div>
-        <button class="product-buy" onclick="buyProd('fire')">Tekinga ol</button>
-      </div>
-      <div class="product-item">
-        <span class="product-icon">🎩</span>
-        <div class="product-info">
-          <div class="product-title">VIP Hat Sticker</div>
-          <div class="product-desc">Chatda VIP shlyapa sticker ishlata olasiz</div>
-        </div>
-        <button class="product-buy" onclick="buyProd('hat')">Tekinga ol</button>
-      </div>
-    </div>
-  </div>
-  <!-- Status bar - sotib olinganini ko'rsatadi -->
-  <div class="m-status-bar" id="statusBar"></div>
 
-  <div class="icons-bar">
-    <div class="panel-item">
-      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#3fa7ff"/><path d="M10.5 6c-1.19 0-2.16.96-2.16 2.16v4.68c0 1.2.97 2.16 2.16 2.16s2.16-.96 2.16-2.16V8.16C12.66 6.96 11.69 6 10.5 6zm0 9.05a3.21 3.21 0 0 1-3.21-3.21V8.16A3.21 3.21 0 0 1 10.5 4.95a3.21 3.21 0 0 1 3.21 3.21v3.68a3.21 3.21 0 0 1-3.21 3.21z" fill="#aad1ff"></path></svg>
-      Global
+<!-- Magazin modal -->
+<div class="magazin-overlay" id="magazinOverlay" aria-hidden="true">
+  <div class="magazin-modal" role="dialog" aria-modal="true">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Magazin</h3>
+      <button onclick="closeMagazin()" style="background:none;border:none;color:#c7dbff;font-weight:800;font-size:20px;cursor:pointer">&times;</button>
     </div>
-    <div class="panel-item">
-      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M6 8.3a.9.9 0 0 1 .9-.9h7.2a.9.9 0 0 1 .9.9v5.2a.9.9 0 0 1-.9.9H9.1L6.7 17.2a.46.46 0 0 1-.7-.4V8.3Z" fill="#aad1ff"></path></svg>
-      Messages
-    </div>
-    <div class="panel-item">
-      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M10.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1.3c-2.2 0-4 1.4-4 3.1v.6c0 .4.3.7.7.7h6.6c.4 0 .7-.3.7-.7v-.6c0-1.7-1.8-3.1-4-3.1z" fill="#aad1ff"></path></svg>
-      Friends
-    </div>
-    <div class="panel-item" onclick="openMagazin()">
-      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><rect x="7.5" y="7.5" width="6" height="6" rx="1.2" fill="#aad1ff"/><text x="10.5" y="15" text-anchor="middle" font-size="4" fill="#5273b2" font-family="Arial" dy="-0.5">M</text></svg>
-      Magazin
-    </div>
-    <div class="panel-item">
-      <svg width="21" height="21" fill="none"><circle cx="10.5" cy="10.5" r="10.5" fill="#5273b2"/><path d="M11.4 10.4a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0zM10.5 6.7a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8zm0 7.9a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8z" fill="#aad1ff"></path></svg>
-      Settings
+    <p style="color:var(--muted);margin-top:6px">Sotib olingan mahsulotlar profilga avtomatik qoʻshiladi. (Demo: bepul - localStorage orqali)</p>
+    <div class="prod-grid">
+      <div class="prod-item">
+        <div class="ico">DEV</div>
+        <div style="flex:1">
+          <div style="font-weight:800">Dev Rang (moviy/purple)</div>
+          <div style="color:var(--muted)">Profilga Dev rang border qoʻshadi</div>
+        </div>
+        <button class="btn" onclick="buy('dev')">Ol</button>
+      </div>
+      <div class="prod-item">
+        <div class="ico">ADM</div>
+        <div style="flex:1">
+          <div style="font-weight:800">Admin Rang (sariq)</div>
+          <div style="color:var(--muted)">Admin border + status</div>
+        </div>
+        <button class="btn" onclick="buy('admin')">Ol</button>
+      </div>
+      <div class="prod-item">
+        <div class="ico">PRS</div>
+        <div style="flex:1">
+          <div style="font-weight:800">President (qizil)</div>
+          <div style="color:var(--muted)">Profilga eng yuqori rang</div>
+        </div>
+        <button class="btn" onclick="buy('president')">Ol</button>
+      </div>
+      <div class="prod-item">
+        <div class="ico">🔥</div>
+        <div style="flex:1">
+          <div style="font-weight:800">Fire Status</div>
+          <div style="color:var(--muted)">Profilga yonuvchi status qoʻshadi</div>
+        </div>
+        <button class="btn" onclick="buy('fire')">Ol</button>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+        <button class="btn" onclick="closeMagazin()">Bekor</button>
+      </div>
     </div>
   </div>
+</div>
+
+<div class="app">
+  <div class="main">
+    <div class="topbar card">
+      <div class="brand">
+        <div class="logo">1</div>
+        <div>
+          <h1>All of 1</h1>
+          <div style="color:var(--muted);font-size:.9rem">Yangiliklar · Oʻyinlar · Chat</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#aad1ff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input placeholder="Qidirish..." id="searchInput" />
+        </div>
+        <button class="btn" onclick="openMagazin()">Magazin</button>
+      </div>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed" id="feed">
+      <!-- sample posts injected by JS -->
+    </div>
+
+    <!-- Create post -->
+    <div class="card">
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <div class="avatar" id="miniAvatar">U</div>
+        <div style="flex:1">
+          <textarea id="newPost" placeholder="Nimani yangilang?" style="width:100%;min-height:60px;background:transparent;border-radius:8px;border:1px solid rgba(255,255,255,0.03);padding:8px;color:inherit"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+            <button class="btn" onclick="addPost()">Post</button>
+            <button class="btn" onclick="clearPosts()" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)">Tozalash</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="profile-card card" id="profileCard">
+      <div style="position:relative;">
+        <div class="big-avatar" id="bigAvatar">U
+          <div class="status-badge" id="statusBadge" style="display:none">STATUS</div>
+        </div>
+      </div>
+      <div class="profile-info">
+        <h3 id="profileName">NoName</h3>
+        <p id="profileDesc">Profilingiz: unga rang va status qoʻshing — Magazin orqali.</p>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+        <button class="btn" onclick="openMagazin()">Magazin</button>
+        <button class="btn" onclick="promptNick()">Nick</button>
+      </div>
+    </div>
+
+    <div class="chat-panel card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong>Chat — demo</strong>
+        <small style="color:var(--muted)">Offline demo</small>
+      </div>
+      <div class="chat-messages" id="chatMessages" role="log" aria-live="polite">
+        <!-- messages -->
+      </div>
+
+      <div class="chat-input">
+        <input id="chatInput" placeholder="Xabar yozing..." />
+        <button onclick="sendMsg()">Yuborish</button>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- bottom icons -->
+<div class="icons-bar">
+  <div class="bar">
+    <button class="btn active" onclick="showTab('feed')">Global</button>
+    <button class="btn" onclick="showTab('messages')">Messages</button>
+    <button class="btn" onclick="showTab('friends')">Friends</button>
+    <button class="btn" onclick="openMagazin()">Magazin</button>
+    <button class="btn" onclick="showTab('settings')">Settings</button>
+  </div>
+</div>
 
 <script>
-/* BULUT ANIMATSIYASI - FON */
-const canvas = document.getElementById('bulut-canvas');
-const ctx = canvas.getContext('2d');
-let W = window.innerWidth;
-let H = 600 * window.innerHeight / 100;
-canvas.width = W;
-canvas.height = H;
-const colors = [
-  ["#6442a0", "#4e367e"],
-  ["#cabfff", "#321553"],
-  ["#7c67b6", "#cab2ff"],
-  ["#2d1540", "#cab2ff"],
-  ["#cab2ff", "#7c67b6"]
+/* ---------- Demo data & helpers ---------- */
+
+const samplePosts = [
+  {id:1, who:'GameNews', title:'CyberQuest 2 - yangilanish', body:'Bugun yangi patch chiqdi — yangi xaritalar va weapon balancing. Patch notes: Qoʻshimcha map: Neon Labs.'},
+  {id:2, who:'TechWorld', title:'Yangi telefon chiqdi', body:'Yangi Pixel like device 16GB RAM bilan. Benchmarks juda yaxshi.'},
+  {id:3, who:'AllOf1', title:'Welcome', body:'All of 1 saytiga xush kelibsiz! Forum va chat hozir demo rejimida ishlaydi.'}
 ];
-const bulutlar = Array.from({length: 8}, (_,i) => ({
-  x: Math.random()*W,
-  y: Math.random()*H,
-  r: 90 + Math.random()*70,
-  vx: 1 + Math.random()*0.7,
-  vy: 0.7 + Math.random()*1.0,
-  alpha: 0.32 + Math.random()*0.22,
-  gradient: colors[Math.floor(Math.random() * colors.length)]
-}));
-function drawBulut(b) {
-  let grad = ctx.createRadialGradient(b.x, b.y, b.r*0.2, b.x, b.y, b.r);
-  grad.addColorStop(0, b.gradient[0]);
-  grad.addColorStop(1, b.gradient[1]);
-  ctx.save();
-  ctx.beginPath();
-  ctx.ellipse(b.x, b.y, b.r, b.r*(0.6+Math.random()*0.4), Math.random()*2, 0, Math.PI*2);
-  ctx.closePath();
-  ctx.globalAlpha = b.alpha;
-  ctx.shadowColor = "#cabffe";
-  ctx.shadowBlur = 45;
-  ctx.fillStyle = grad;
-  ctx.strokeStyle = "rgba(255,255,255,0.24)";
-  ctx.lineWidth = 7;
-  ctx.fill();
-  ctx.stroke();
-  ctx.restore();
-}
-function animate() {
-  ctx.clearRect(0,0,W,H);
-  for(let b of bulutlar) {
-    drawBulut(b);
-    b.x += b.vx; b.y += b.vy;
-    if(b.x-b.r > W) { b.x = -b.r; b.y = Math.random()*H; }
-    if(b.y-b.r > H) { b.y = -b.r; b.x = Math.random()*W; }
+
+const feedEl = document.getElementById('feed');
+const chatMessages = document.getElementById('chatMessages');
+
+function renderFeed(list = samplePosts){
+  feedEl.innerHTML = '';
+  for(const p of list){
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="meta">
+        <div class="avatar">${p.who.charAt(0)}</div>
+        <div>
+          <div class="who">${p.who}</div>
+          <div class="time">just now</div>
+        </div>
+      </div>
+      <div class="post-title">${p.title}</div>
+      <div class="post-body">${p.body}</div>
+      <div class="post-actions">
+        <div style="cursor:pointer" onclick="like(${p.id}, this)">👍 Like</div>
+        <div style="cursor:pointer" onclick="share(${p.id})">🔁 Share</div>
+        <div style="cursor:pointer" onclick="comment(${p.id})">💬 Comment</div>
+      </div>
+    `;
+    feedEl.appendChild(card);
   }
-  requestAnimationFrame(animate);
 }
-animate();
-window.addEventListener('resize', ()=>{
-  W = window.innerWidth;
-  H = 600 * window.innerHeight / 100;
-  canvas.width = W;
-  canvas.height = H;
+renderFeed();
+
+/* Post creation */
+function addPost(){
+  const txt = document.getElementById('newPost').value.trim();
+  if(!txt) return alert('Post yozing...');
+  const newP = { id: Date.now(), who: localStorage.getItem('nickname') || 'Siz', title:'User post', body: txt };
+  samplePosts.unshift(newP);
+  document.getElementById('newPost').value = '';
+  renderFeed();
+}
+
+/* Simulated actions */
+function like(id, el){ el.textContent = '💙 Liked'; setTimeout(()=>el.textContent='👍 Like',1400); }
+function share(id){ alert('Share demo: id ' + id); }
+function comment(id){ const c = prompt('Kommentar yozing:'); if(c) alert('Comment yuborildi: ' + c); }
+
+/* Chat demo */
+function sendMsg(){
+  const txt = document.getElementById('chatInput').value.trim();
+  if(!txt) return;
+  appendMsg(txt,'me');
+  document.getElementById('chatInput').value = '';
+  // demo bot reply
+  setTimeout(()=>appendMsg('Server: demo javob — ' + txt, 'them'), 900);
+}
+function appendMsg(text, who){
+  const d = document.createElement('div');
+  d.className = 'msg ' + (who==='me' ? 'me' : 'them');
+  d.textContent = text;
+  chatMessages.appendChild(d);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+/* add some demo messages */
+appendMsg('Xush kelibsiz All of 1 chat demo.','them');
+
+/* Profile & Magazin functions */
+function promptNick(){
+  const n = prompt('Yangi nickname kiriting: (misol: YusufDev)');
+  if(n){
+    localStorage.setItem('nickname', n);
+    applyProfile();
+    showStatus('Nick saqlandi: ' + n);
+  }
+}
+function applyProfile(){
+  const nick = localStorage.getItem('nickname') || 'NoName';
+  document.getElementById('profileName').textContent = nick;
+  document.getElementById('miniAvatar').textContent = nick.charAt(0).toUpperCase();
+  document.getElementById('bigAvatar').textContent = nick.charAt(0).toUpperCase();
+  // apply rank class if any
+  const rank = localStorage.getItem('rank'); // values: dev, admin, president, vip
+  const big = document.getElementById('bigAvatar');
+  big.classList.remove('rank-dev','rank-admin','rank-president','rank-vip','status-fire','status-ice','status-ghost');
+  document.getElementById('statusBadge').style.display='none';
+  if(rank==='dev'){ big.classList.add('rank-dev'); }
+  if(rank==='admin'){ big.classList.add('rank-admin'); }
+  if(rank==='president'){ big.classList.add('rank-president'); }
+  if(rank==='vip'){ big.classList.add('rank-vip'); }
+
+  // status
+  const status = localStorage.getItem('status'); // fire, ice, ghost
+  if(status==='fire'){ big.classList.add('status-fire'); document.getElementById('statusBadge').style.display='block'; document.getElementById('statusBadge').textContent='FIRE' }
+  if(status==='ice'){ big.classList.add('status-ice'); document.getElementById('statusBadge').style.display='block'; document.getElementById('statusBadge').textContent='ICE' }
+  if(status==='ghost'){ big.classList.add('status-ghost'); document.getElementById('statusBadge').style.display='block'; document.getElementById('statusBadge').textContent='GHOST' }
+
+  // small desc update
+  const desc = localStorage.getItem('desc') || 'Profilingiz: unga rang va status qoʻshing — Magazin orqali.';
+  document.getElementById('profileDesc').textContent = desc;
+}
+applyProfile();
+
+function openMagazin(){ document.getElementById('magazinOverlay').classList.add('active'); }
+function closeMagazin(){ document.getElementById('magazinOverlay').classList.remove('active'); }
+
+function buy(key){
+  // demo: save to localStorage
+  if(key==='dev'){ localStorage.setItem('rank','dev'); showStatus('Dev rank qoʻshildi!') }
+  if(key==='admin'){ localStorage.setItem('rank','admin'); showStatus('Admin rank qoʻshildi!') }
+  if(key==='president'){ localStorage.setItem('rank','president'); showStatus('President rank qoʻshildi!') }
+  if(key==='fire'){ localStorage.setItem('status','fire'); showStatus('Fire status qoʻshildi!') }
+  // reflect immediately
+  applyProfile();
+  // close modal a bit later
+  setTimeout(()=>closeMagazin(),400);
+}
+
+/* status bar / toasts */
+function showStatus(txt){
+  // small floating toast on top of page
+  let el = document.getElementById('__toast__');
+  if(!el){
+    el = document.createElement('div');
+    el.id='__toast__';
+    el.style.position='fixed';
+    el.style.top='18px';
+    el.style.left='50%';
+    el.style.transform='translateX(-50%)';
+    el.style.background='rgba(14,14,25,0.8)';
+    el.style.color='#c7dbff';
+    el.style.padding='10px 14px';
+    el.style.borderRadius='10px';
+    el.style.zIndex=9999;
+    el.style.boxShadow='0 12px 40px rgba(0,0,0,0.6)';
+    document.body.appendChild(el);
+  }
+  el.textContent = txt;
+  el.style.opacity = '1';
+  clearTimeout(window.__toast_timeout);
+  window.__toast_timeout = setTimeout(()=>{ el.style.opacity='0'; }, 2600);
+}
+
+/* small utilities */
+function clearPosts(){
+  if(!confirm('Haqiqatan ham posts tozalansinmi? (faqat demo)')) return;
+  samplePosts.length = 0;
+  renderFeed();
+  showStatus('Feed tozalandi (demo).');
+}
+
+/* bottom bar tabs (demo) */
+function showTab(name){
+  const buttons = document.querySelectorAll('.icons-bar .btn');
+  buttons.forEach(b => b.classList.remove('active'));
+  // mark clicked
+  Array.from(buttons).find(b => b.textContent.trim().toLowerCase().includes(name))?.classList.add('active');
+  // simple behavior
+  if(name==='messages'){ document.querySelector('.chat-panel').scrollIntoView({behavior:'smooth'}); showStatus('Messages ga o‘tildi'); }
+  if(name==='feed'){ window.scrollTo({top:0,behavior:'smooth'}); showStatus('Global feed'); }
+}
+
+/* search filter */
+document.getElementById('searchInput').addEventListener('input', (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  if(!q) return renderFeed();
+  const filtered = samplePosts.filter(p => (p.title + ' ' + p.body + ' ' + p.who).toLowerCase().includes(q));
+  renderFeed(filtered);
 });
 
-/* MAGAZIN ANIMATSIYA + YOPISH OVERLAY */
-function openMagazin(){
-  document.getElementById('magazinModal').classList.add('active');
-  document.getElementById('magazinOverlay').classList.add('active');
-}
-function closeMagazin(){
-  document.getElementById('magazinModal').classList.remove('active');
-  document.getElementById('magazinOverlay').classList.remove('active');
-}
-document.getElementById('magazinOverlay').onclick = closeMagazin;
+/* load nickname if exists */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const nick = localStorage.getItem('nickname');
+  if(!nick){
+    // auto prompt? skip to avoid annoying - user can click Nick button
+    // promptNick();
+  } else {
+    applyProfile();
+    showStatus('Sizning nick: ' + nick);
+  }
+});
+function applyProfile(){
+  const nick = localStorage.getItem('nickname') || 'NoName';
+  document.getElementById('profileName').textContent = nick;
 
-function buyProd(prod){
-  let status = '';
-  if(prod==='premium') status = 'All of 1 Premium sotib olindi!';
-  if(prod==='fire') status = 'Fire Sticker tekin olindi!';
-  if(prod==='hat') status = 'VIP Hat Sticker tekin olindi!';
-  showStatus(status);
+  const first = nick.charAt(0).toUpperCase();
+  document.getElementById('miniAvatar').textContent = first;
+  document.getElementById('bigAvatar').textContent = first;
+
+  // rank va statuslarni yuklash
+  const rank = localStorage.getItem('rank') || '';
+  const status = localStorage.getItem('status') || '';
+
+  const big = document.getElementById('bigAvatar');
+  const card = document.getElementById('profileCard');
+  const badge = document.getElementById('statusBadge');
+
+  // tozalash
+  big.classList.remove('status-fire', 'status-ice', 'status-ghost');
+  card.classList.remove('rank-dev', 'rank-admin', 'rank-president', 'rank-vip');
+  badge.style.display = 'none';
+
+  // rang qo‘llash
+  if(rank === 'dev') card.classList.add('rank-dev');
+  if(rank === 'admin') card.classList.add('rank-admin');
+  if(rank === 'president') card.classList.add('rank-president');
+  if(rank === 'vip') card.classList.add('rank-vip');
+
+  // status qo‘llash
+  if(status){
+    badge.style.display = 'block';
+    if(status === 'fire'){
+      big.classList.add('status-fire');
+      badge.textContent = "🔥 Fire";
+    }
+    if(status === 'ice'){
+      big.classList.add('status-ice');
+      badge.textContent = "❄ Ice";
+    }
+    if(status === 'ghost'){
+      big.classList.add('status-ghost');
+      badge.textContent = "👻 Ghost";
+    }
+  }
 }
-function showStatus(txt){
-  let el = document.getElementById('statusBar');
-  el.textContent = txt;
-  el.classList.add('active');
-  setTimeout(() => { el.classList.remove('active'); }, 2600);
+
+/* MAGAZINDAN SOTIB OLISH */
+function buy(type){
+  if(type === 'dev'){
+    localStorage.setItem('rank','dev');
+    alert('Dev rang olindi!');
+  }
+  if(type === 'admin'){
+    localStorage.setItem('rank','admin');
+    alert('Admin rang olindi!');
+  }
+  if(type === 'president'){
+    localStorage.setItem('rank','president');
+    alert('President olindi!');
+  }
+  if(type === 'fire'){
+    localStorage.setItem('status','fire');
+    alert('Fire status qo‘shildi!');
+  }
+  
+  applyProfile();
+  closeMagazin();
 }
+
+/* Yordamchi */
+function showStatus(t){ console.log(t); }
+
+/* dastlabki yuklash */
+applyProfile();
+
 </script>
+
 </body>
 </html>
